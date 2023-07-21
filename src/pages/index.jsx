@@ -55,7 +55,7 @@ const Home = () => {
   const handleScroll = () => {
     setScrollY(window.scrollY)
   }
-  
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)
     return () => {
@@ -139,9 +139,9 @@ const Home = () => {
           </div>
         </div>
 
-
-        <Pagination data={data} setData={setCountries} itemsPerPage={15} />
-
+        
+          <Pagination data={data} setData={setCountries} itemsPerPage={15} />
+        
         <ScrollToTopComponent scrollY={scrollY} />
       </div>
     </>

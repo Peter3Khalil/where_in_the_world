@@ -51,6 +51,7 @@ const Button = ({text,onClick,disabled=false})=>{
     opacity-60
     scale-75
     dark:bg-dark-element
+    mb-14
     `
     : 
     `flex
@@ -62,6 +63,7 @@ const Button = ({text,onClick,disabled=false})=>{
     rounded-md
     py-1
     dark:bg-dark-element
+    mb-14
     `}
     disabled={disabled}
     onClick={onClick}

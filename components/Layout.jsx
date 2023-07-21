@@ -1,6 +1,6 @@
 "use client";
 import Head from 'next/head'
-import React,{FC,useState} from 'react'
+import React,{FC,useEffect,useState} from 'react'
 import Navbar from './Navbar'
 import Footer from './Footer';
 
@@ -9,6 +9,12 @@ const Layout = ({children}) => {
     const handleMode = ()=>{
         setMode(mode=>mode==="dark"?"":"dark")
     }
+    useEffect(()=>{
+        setMode(localStorage.getItem("mode") || "")
+    },[])
+    useEffect(()=>{
+        localStorage.setItem("mode",mode)
+    },[mode])
   return (
     <>
     <Head>
@@ -24,6 +30,7 @@ const Layout = ({children}) => {
      bg-light-bg
      dark:bg-dark-bg
      dark:text-white
+     relative
     '>
         <header>
             <Navbar mode={mode} setMode={handleMode}/>
@@ -33,10 +40,11 @@ const Layout = ({children}) => {
         px-6
         pb-20
         lg:px-14
+        mb-12
         '>
             {children}
         </main>
-        <footer className='self-center w-full'>
+        <footer className='self-center w-full absolute bottom-0 left-0'>
             <Footer/>
         </footer>
         </div>
