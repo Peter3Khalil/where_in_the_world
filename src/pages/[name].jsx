@@ -156,8 +156,7 @@ const CountryDetails = ({ dehydratedState, borders }) => {
               grid
               grid-cols-3
               w-full
-              place-items-center
-              gap-3
+              gap-6
               lg:absolute
               lg:bottom-0
               '>
@@ -165,7 +164,7 @@ const CountryDetails = ({ dehydratedState, borders }) => {
                         return <div key={i + item.name.common} className='
                     col-span-1
                     min-h-[2.25rem]
-                    md:w-36
+                    
                     '>
                           <BorderComponents key={i + item.name.common} name={item.name.common} />
                         </div>

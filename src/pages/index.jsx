@@ -9,6 +9,7 @@ import { QueryClient, dehydrate, useQuery } from "react-query"
 import { BsFillArrowUpCircleFill } from "react-icons/bs"
 import ClipLoader from "react-spinners/ClipLoader";
 import Head from 'next/head';
+import Pagination from '../../components/Pagination';
 const fields = ["name", "capital", "region", "population", "flags", "area"]
 
 const Home = () => {
@@ -50,23 +51,23 @@ const Home = () => {
       return array
     }
   })
-
+  const [countries, setCountries] = useState(data?.slice(0, 15))
   const handleScroll = () => {
     setScrollY(window.scrollY)
   }
+  
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [])
-
   return (
     <>
-    <Head>
-      <title>Where in the world?</title>
-      <link rel='icon' href='clipart-earth-animated-19.png'/>
-    </Head>
+      <Head>
+        <title>Where in the world?</title>
+        <link rel='icon' href='clipart-earth-animated-19.png' />
+      </Head>
       <div className='
     w-full
     flex
@@ -96,12 +97,12 @@ const Home = () => {
               <Filter currentRegion={currentRegion} setCurrentRegion={setCurrentRegion} />
             </div>
             <h1 className='capitalize flex gap-1 md:hidden lg:flex lg:order-1'>
-              result:<span>{data?.length}</span>
+              result:<span>{data?.length}</span> {currentRegion.toLowerCase() === "all" ? "" : `in ${currentRegion}`}
             </h1>
           </div>
         </div>
         <h1 className='hidden capitalize gap-1  md:flex self-start lg:hidden'>
-          result:<span>{data?.length}</span>
+          result:<span>{data?.length}</span> {currentRegion.toLowerCase() === "all" ? "" : `in ${currentRegion}`}
         </h1>
 
         {/* Countries Container */}
@@ -120,7 +121,7 @@ const Home = () => {
       lg:gap-y-10
       lg:px-0
       '>
-          <MemoizedRenderCountriesComponents data={data} />
+          <MemoizedRenderCountriesComponents data={countries} />
           {!isLoading && !isFetching && !data?.length &&
             <div className='flex w-full md:col-span-2 lg:col-span-5 justify-center '>
               <h1 className='text-3xl'>
@@ -138,11 +139,8 @@ const Home = () => {
           </div>
         </div>
 
-        {/* {data &&
-        <div>
-          <Pagination setData={setCountries} data={data}  itemsPerPage={15} />
-        </div>
-      } */}
+
+        <Pagination data={data} setData={setCountries} itemsPerPage={15} />
 
         <ScrollToTopComponent scrollY={scrollY} />
       </div>
@@ -169,6 +167,38 @@ const ScrollToTopComponent = ({ scrollY }) => {
   </>
 }
 
+const Button = ({ text, onClick, disabled = false }) => {
+  return (<button type='button' className={
+    disabled ? `
+  flex
+  justify-center
+  items-center
+  capitalize
+  w-20
+  shadow-md
+  rounded-md
+  py-1
+  opacity-60
+  scale-75
+  dark:bg-dark-element
+  `
+      :
+      `flex
+  justify-center
+  items-center
+  capitalize
+  w-20
+  shadow-md
+  rounded-md
+  py-1
+  dark:bg-dark-element
+  `}
+    disabled={disabled}
+    onClick={onClick}
+  >
+    {text}
+  </button>)
+}
 
 export async function getStaticProps() {
   const queryClient = new QueryClient();

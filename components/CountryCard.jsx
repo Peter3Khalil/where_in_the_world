@@ -78,5 +78,6 @@ const CountryCard = ({ alt,flag, population, region, capital, name,area }) => {
   </>
   )
 }
+CountryCard.displayName = "CountryCard"
 
 export default CountryCard
