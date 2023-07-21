@@ -158,6 +158,7 @@ const ScrollToTopComponent = ({ scrollY }) => {
   bottom-10
   right-5
   z-50
+  cursor-pointer
   '
         onClick={() => window.scrollTo({ top: 0 })}
       >
@@ -167,38 +168,6 @@ const ScrollToTopComponent = ({ scrollY }) => {
   </>
 }
 
-const Button = ({ text, onClick, disabled = false }) => {
-  return (<button type='button' className={
-    disabled ? `
-  flex
-  justify-center
-  items-center
-  capitalize
-  w-20
-  shadow-md
-  rounded-md
-  py-1
-  opacity-60
-  scale-75
-  dark:bg-dark-element
-  `
-      :
-      `flex
-  justify-center
-  items-center
-  capitalize
-  w-20
-  shadow-md
-  rounded-md
-  py-1
-  dark:bg-dark-element
-  `}
-    disabled={disabled}
-    onClick={onClick}
-  >
-    {text}
-  </button>)
-}
 
 export async function getStaticProps() {
   const queryClient = new QueryClient();
