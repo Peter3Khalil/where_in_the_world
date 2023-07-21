@@ -163,7 +163,7 @@ const CountryDetails = ({ dehydratedState, borders }) => {
               '>
                       {borders.map((item, i) => {
                         return <div key={i + item.name.common} className='
-                    w-28
+                    col-span-1
                     min-h-[2.25rem]
                     md:w-36
                     '>
