@@ -2,6 +2,7 @@
 import Head from 'next/head'
 import React,{FC,useState} from 'react'
 import Navbar from './Navbar'
+import Footer from './Footer';
 
 const Layout = ({children}) => {
     const [mode,setMode] = useState("");
@@ -35,6 +36,9 @@ const Layout = ({children}) => {
         '>
             {children}
         </main>
+        <footer className='self-center w-full'>
+            <Footer/>
+        </footer>
         </div>
     </div>
     </>
