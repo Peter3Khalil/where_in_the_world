@@ -6,6 +6,7 @@ import { AiOutlineArrowLeft } from "react-icons/ai"
 import formatNumber from '../../util/formatNumber';
 import { useQuery, QueryClient, dehydrate } from 'react-query';
 import { fetchCountryByCode, fetchCountryByName } from '../../util/fetchApi';
+import Head from 'next/head';
 const fields = ["name", "population", "region", "capital", "languages", "currencies", "flags", "tld", "area", "idd", "borders", "subregion"]
 
 
@@ -28,15 +29,20 @@ const CountryDetails = ({ dehydratedState, borders }) => {
   idd = idd[0] + idd[1][0]
   let nativeName = Object.values(name?.nativeName)[0]?.official
   return (
-    <div className='
+    <>
+    <Head>
+      <title>Where in the world | {name.common}</title>
+      <link rel='icon' href={flags.svg}/>
+    </Head>
+      <div className='
     w-full
     flex
     flex-col
     gap-12
     lg:gap-20
     '>
-      <button type='button'
-        className='
+        <button type='button'
+          className='
       w-24
       h-8
       custom-shadow
@@ -48,12 +54,12 @@ const CountryDetails = ({ dehydratedState, borders }) => {
       text-sm
       dark:bg-dark-element
       '
-        onClick={() => router.back()}
-      >
-        <AiOutlineArrowLeft />
-        <h1 className='capitalize'>back</h1>
-      </button>
-      <div className='
+          onClick={() => router.back()}
+        >
+          <AiOutlineArrowLeft />
+          <h1 className='capitalize'>back</h1>
+        </button>
+        <div className='
       w-full
       flex
       flex-col
@@ -63,14 +69,14 @@ const CountryDetails = ({ dehydratedState, borders }) => {
       lg:gap-20
       lg:items-center
       '>
-        <div className='
+          <div className='
         w-full
         h-[250px]
         relative
         md:h-[400px]
         '>
-          <Image src={flags.svg} width={100} height={100} alt={flags.alt}
-            className='
+            <Image src={flags.svg} width={100} height={100} alt={flags.alt}
+              className='
           absolute
           object-cover
           top-0
@@ -78,62 +84,62 @@ const CountryDetails = ({ dehydratedState, borders }) => {
           w-full
           h-full
           '
-          />
-        </div>
-        <div className='
+            />
+          </div>
+          <div className='
         w-full
         lg:h-[400px]
         relative
         '>
-          <h1 className='text-xl font-bold mb-5 lg:mb-10 lg:text-3xl'>{name.common}</h1>
+            <h1 className='text-xl font-bold mb-5 lg:mb-10 lg:text-3xl'>{name.common}</h1>
 
-          <div className='
+            <div className='
           flex
           flex-col
           gap-8
           h-full
           '>
-            <div className='
+              <div className='
             flex
             flex-col
             gap-8
             lg:flex-row
             lg:justify-between
             '>
-              <div className='
+                <div className='
           flex
           flex-col
           gap-3
           '>
-                <PropertyBox property={"native name"} value={nativeName || name.common} />
-                <PropertyBox property={"population"} value={formatNumber(population)} />
-                <PropertyBox property={"region"} value={region} />
-                {subregion && <PropertyBox property={"sub region"} value={subregion} />}
-                {capital.length !== 0 && <PropertyBox property={"capital"} value={capital} />}
-              </div>
-              <div className='
+                  <PropertyBox property={"native name"} value={nativeName || name.common} />
+                  <PropertyBox property={"population"} value={formatNumber(population)} />
+                  <PropertyBox property={"region"} value={region} />
+                  {subregion && <PropertyBox property={"sub region"} value={subregion} />}
+                  {capital.length !== 0 && <PropertyBox property={"capital"} value={capital} />}
+                </div>
+                <div className='
           flex
           flex-col
           gap-3
           '>
-                <PropertyBox property={"area"} value={formatNumber(area) + " km²"} />
-                {tld[0] && <PropertyBox property={"top level domain"} value={tld[0]} />}
-                {currencies.length !== 0 && <PropertyBox property={"currencies"} value={currencies[0]?.name + ` (${currencies[0]?.symbol})`} />}
-                {languages.length !== 0 ? <PropertyBox property={"languages"} value={languages?.join(", ")} />
-                  : <PropertyBox property={"languages"} value={"it does not have an official language"} />
-                }
-                {idd !== undefined && <PropertyBox property={"calling code"} value={idd} />}
+                  <PropertyBox property={"area"} value={formatNumber(area) + " km²"} />
+                  {tld[0] && <PropertyBox property={"top level domain"} value={tld[0]} />}
+                  {currencies.length !== 0 && <PropertyBox property={"currencies"} value={currencies[0]?.name + ` (${currencies[0]?.symbol})`} />}
+                  {languages.length !== 0 ? <PropertyBox property={"languages"} value={languages?.join(", ")} />
+                    : <PropertyBox property={"languages"} value={"it does not have an official language"} />
+                  }
+                  {idd !== undefined && <PropertyBox property={"calling code"} value={idd} />}
+                </div>
               </div>
-            </div>
-            <div className='
+              <div className='
             w-full
             lg:min-h-[100px]
             lg:h-[100px]
             lg:absolute
             lg:bottom-0
             '>
-              {borders.length !== 0 &&
-                <div className='
+                {borders.length !== 0 &&
+                  <div className='
             w-full
             flex
             flex-col
@@ -145,8 +151,8 @@ const CountryDetails = ({ dehydratedState, borders }) => {
             lg:relative
             lg:h-full
             '>
-                  <h1 className='capitalize text-lg'>border countries:</h1>
-                  <div className='
+                    <h1 className='capitalize text-lg'>border countries:</h1>
+                    <div className='
               grid
               grid-cols-3
               w-full
@@ -155,23 +161,24 @@ const CountryDetails = ({ dehydratedState, borders }) => {
               lg:absolute
               lg:bottom-0
               '>
-                    {borders.map((item, i) => {
-                      return <div key={i + item.name.common} className='
+                      {borders.map((item, i) => {
+                        return <div key={i + item.name.common} className='
                     w-28
                     min-h-[2.25rem]
                     md:w-36
                     '>
-                        <BorderComponents key={i + item.name.common} name={item.name.common} />
-                      </div>
-                    })}
+                          <BorderComponents key={i + item.name.common} name={item.name.common} />
+                        </div>
+                      })}
+                    </div>
                   </div>
-                </div>
-              }
+                }
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

@@ -1,6 +1,6 @@
 //https://gitlab.com/restcountries/restcountries
 
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import Searchbar from '../../components/Searchbar'
 import Filter from '../../components/Filter'
 import MemoizedRenderCountriesComponents from '../../components/RenderCountriesComponents';
@@ -8,6 +8,7 @@ import { fetchCountriesByRegion } from '../../util/fetchApi'
 import { QueryClient, dehydrate, useQuery } from "react-query"
 import { BsFillArrowUpCircleFill } from "react-icons/bs"
 import ClipLoader from "react-spinners/ClipLoader";
+import Head from 'next/head';
 const fields = ["name", "capital", "region", "population", "flags", "area"]
 
 const Home = () => {
@@ -61,7 +62,12 @@ const Home = () => {
   }, [])
 
   return (
-    <div className='
+    <>
+    <Head>
+      <title>Where in the world?</title>
+      <link rel='icon' href='clipart-earth-animated-19.png'/>
+    </Head>
+      <div className='
     w-full
     flex
     flex-col
@@ -70,7 +76,7 @@ const Home = () => {
     lg:gap-12
     relative
     '>
-      <div className='
+        <div className='
       w-full
       flex
       flex-col
@@ -79,27 +85,27 @@ const Home = () => {
       md:flex-row
       md:justify-between
       '>
-        <Searchbar setSearch={setSearch} />
-        <div className='
+          <Searchbar setSearch={setSearch} />
+          <div className='
         flex
         justify-between
         items-center
         lg:gap-5
         '>
-          <div className='lg:order-2'>
-          <Filter currentRegion={currentRegion} setCurrentRegion={setCurrentRegion} />
+            <div className='lg:order-2'>
+              <Filter currentRegion={currentRegion} setCurrentRegion={setCurrentRegion} />
+            </div>
+            <h1 className='capitalize flex gap-1 md:hidden lg:flex lg:order-1'>
+              result:<span>{data?.length}</span>
+            </h1>
           </div>
-          <h1 className='capitalize flex gap-1 md:hidden lg:flex lg:order-1'>
-            result:<span>{data?.length}</span>
-          </h1>
         </div>
-      </div>
-      <h1 className='hidden capitalize gap-1  md:flex self-start lg:hidden'>
-            result:<span>{data?.length}</span>
-          </h1>
+        <h1 className='hidden capitalize gap-1  md:flex self-start lg:hidden'>
+          result:<span>{data?.length}</span>
+        </h1>
 
-      {/* Countries Container */}
-      <div className='
+        {/* Countries Container */}
+        <div className='
       w-full
       flex
       flex-col
@@ -114,32 +120,33 @@ const Home = () => {
       lg:gap-y-10
       lg:px-0
       '>
-        <MemoizedRenderCountriesComponents data={data} />
-        {!isLoading && !isFetching && !data?.length &&
-          <div className='flex w-full md:col-span-2 lg:col-span-5 justify-center '>
-            <h1 className='text-3xl'>
-              No Results
-            </h1>
+          <MemoizedRenderCountriesComponents data={data} />
+          {!isLoading && !isFetching && !data?.length &&
+            <div className='flex w-full md:col-span-2 lg:col-span-5 justify-center '>
+              <h1 className='text-3xl'>
+                No Results
+              </h1>
+            </div>
+          }
+          <div className='flex w-full md:col-span-2 lg:col-span-5 justify-center'>
+            {<ClipLoader
+              loading={isLoading || isFetching}
+              size={150}
+              aria-label="Loading Spinner"
+              data-testid="loader"
+            />}
           </div>
-        }
-        <div className='flex w-full md:col-span-2 lg:col-span-5 justify-center'>
-          {<ClipLoader
-            loading={isLoading || isFetching}
-            size={150}
-            aria-label="Loading Spinner"
-            data-testid="loader"
-          />}
         </div>
-      </div>
 
-      {/* {data &&
+        {/* {data &&
         <div>
           <Pagination setData={setCountries} data={data}  itemsPerPage={15} />
         </div>
       } */}
 
-      <ScrollToTopComponent scrollY={scrollY} />
-    </div>
+        <ScrollToTopComponent scrollY={scrollY} />
+      </div>
+    </>
   )
 }
 
