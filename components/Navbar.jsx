@@ -27,7 +27,7 @@ const Navbar= ({ setMode ,mode}) => {
         className="
         first-letter:capitalize 
         font-bold 
-        text-sm
+        text-lg
         lg:text-xl
         tracking-wide
         "

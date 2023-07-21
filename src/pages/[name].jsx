@@ -19,6 +19,7 @@ const PropertyBox = ({ property, value }) => {
   </>)
 }
 const CountryDetails = ({ dehydratedState, borders }) => {
+  const router = useRouter()
   const data = dehydratedState.queries[0].state.data[0]
   let { flags, name, population, area, capital, region, subregion, currencies, tld, idd, languages } = data
   languages = Object.values(languages);
@@ -26,15 +27,15 @@ const CountryDetails = ({ dehydratedState, borders }) => {
   idd = Object.values(idd)
   idd = idd[0] + idd[1][0]
   let nativeName = Object.values(name?.nativeName)[0]?.official
-
   return (
     <div className='
     w-full
     flex
     flex-col
     gap-12
+    lg:gap-20
     '>
-      <Link href={"/"} type='button'
+      <button type='button'
         className='
       w-24
       h-8
@@ -47,10 +48,11 @@ const CountryDetails = ({ dehydratedState, borders }) => {
       text-sm
       dark:bg-dark-element
       '
+        onClick={() => router.back()}
       >
         <AiOutlineArrowLeft />
-        <h1 className='capitalize font-thin'>back</h1>
-      </Link>
+        <h1 className='capitalize'>back</h1>
+      </button>
       <div className='
       w-full
       flex
@@ -66,7 +68,6 @@ const CountryDetails = ({ dehydratedState, borders }) => {
         h-[250px]
         relative
         md:h-[400px]
-        lg:h-[500px]
         '>
           <Image src={flags.svg} width={100} height={100} alt={flags.alt}
             className='
@@ -82,6 +83,7 @@ const CountryDetails = ({ dehydratedState, borders }) => {
         <div className='
         w-full
         lg:h-[400px]
+        relative
         '>
           <h1 className='text-xl font-bold mb-5 lg:mb-10 lg:text-3xl'>{name.common}</h1>
 
@@ -89,7 +91,6 @@ const CountryDetails = ({ dehydratedState, borders }) => {
           flex
           flex-col
           gap-8
-          relative
           h-full
           '>
             <div className='
@@ -118,49 +119,55 @@ const CountryDetails = ({ dehydratedState, borders }) => {
                 <PropertyBox property={"area"} value={formatNumber(area) + " km²"} />
                 {tld[0] && <PropertyBox property={"top level domain"} value={tld[0]} />}
                 {currencies.length !== 0 && <PropertyBox property={"currencies"} value={currencies[0]?.name + ` (${currencies[0]?.symbol})`} />}
-                {languages.length !== 0 ? <PropertyBox property={"languages"} value={languages?.join()} />
+                {languages.length !== 0 ? <PropertyBox property={"languages"} value={languages?.join(", ")} />
                   : <PropertyBox property={"languages"} value={"it does not have an official language"} />
                 }
                 {idd !== undefined && <PropertyBox property={"calling code"} value={idd} />}
               </div>
             </div>
-
-            {borders.length !== 0 &&
-              <div className='
+            <div className='
+            w-full
+            lg:min-h-[100px]
+            lg:h-[100px]
+            lg:absolute
+            lg:bottom-0
+            '>
+              {borders.length !== 0 &&
+                <div className='
             w-full
             flex
             flex-col
             gap-4
             md:flex-row
             md:items-center
-            lg:absolute
-            lg:bottom-0
             lg:flex-col
             lg:items-start
+            lg:relative
+            lg:h-full
             '>
-                <h1 className='capitalize text-lg'>border countries:</h1>
-                <div className='
+                  <h1 className='capitalize text-lg'>border countries:</h1>
+                  <div className='
               grid
               grid-cols-3
               w-full
-              items-center
+              place-items-center
               gap-3
-              md:flex-row
-              md:flex
-              md:justify-between
+              lg:absolute
+              lg:bottom-0
               '>
-                  {borders.map((item, i) => {
-                    return <div key={i + item.name.common} className='
+                    {borders.map((item, i) => {
+                      return <div key={i + item.name.common} className='
                     w-28
                     min-h-[2.25rem]
                     md:w-36
                     '>
-                      <BorderComponents key={i + item.name.common} name={item.name.common} />
-                    </div>
-                  })}
+                        <BorderComponents key={i + item.name.common} name={item.name.common} />
+                      </div>
+                    })}
+                  </div>
                 </div>
-              </div>
-            }
+              }
+            </div>
           </div>
         </div>
       </div>

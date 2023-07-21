@@ -104,7 +104,6 @@ const Home = () => {
       flex
       flex-col
       gap-10
-      px-8
       justify-center
       items-center
       md:grid

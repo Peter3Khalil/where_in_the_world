@@ -9,8 +9,10 @@ const Filter = memo(({setCurrentRegion,currentRegion}) => {
   const [show, setShow] = useState(false)
   return (
     <div className='
-    w-[200px]
-    h-16
+    w-[150px]
+    h-14
+    md:w-[200px]
+    md:h-16
     bg-white
     dark:bg-dark-element
     custom-shadow
@@ -27,7 +29,8 @@ const Filter = memo(({setCurrentRegion,currentRegion}) => {
       justify-center
       items-center
       gap-2
-  
+      text-sm
+      lg:text-lg
       '
       onClick={() => setShow(!show)}
 
