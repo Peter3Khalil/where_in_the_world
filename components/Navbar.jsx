@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { CiDark,CiLight } from "react-icons/ci";
 
 const Navbar= ({ setMode ,mode}) => {
+  const router = useRouter()
   return (
     <nav
       className={`
@@ -23,7 +25,7 @@ const Navbar= ({ setMode ,mode}) => {
       lg:px-14
     `}
     >
-      <Link href={`/`}
+      <h1
         className="
         first-letter:capitalize 
         font-bold 
@@ -31,9 +33,10 @@ const Navbar= ({ setMode ,mode}) => {
         lg:text-xl
         tracking-wide
         "
+        onClick={()=>router.push("/")}
       >
         where in the world?
-      </Link>
+      </h1>
       <div
         className={`
         flex
