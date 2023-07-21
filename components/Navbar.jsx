@@ -32,6 +32,7 @@ const Navbar= ({ setMode ,mode}) => {
         text-lg
         lg:text-xl
         tracking-wide
+        cursor-pointer
         "
         onClick={()=>router.push("/")}
       >
