@@ -30,7 +30,7 @@ const Footer = () => {
         ' />
         <h1 className='capitalize text-sm'>Source code</h1>
       </div>
-      <h1 className='text-sm text-gray-400'>Made by <span className='text-black font-semibold dark:text-white'>Peter Khalil</span></h1>
+      <h1 className='text-sm text-gray-400'>Made by <span className='text-black font-semibold dark:text-white ml-1'>Peter Khalil</span></h1>
     </div>
   )
 }

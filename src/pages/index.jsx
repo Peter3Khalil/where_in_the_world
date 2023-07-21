@@ -66,7 +66,7 @@ const Home = () => {
     <>
       <Head>
         <title>Where in the world?</title>
-        <link rel='icon' href='clipart-earth-animated-19.png' />
+        <link rel='icon' href='icon.png' />
       </Head>
       <div className='
     w-full

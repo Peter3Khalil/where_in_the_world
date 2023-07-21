@@ -39,7 +39,6 @@ const CountryDetails = ({ dehydratedState, borders }) => {
     flex
     flex-col
     gap-12
-    lg:gap-20
     '>
         <button type='button'
           className='
