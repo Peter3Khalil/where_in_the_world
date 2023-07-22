@@ -22,7 +22,6 @@ export const fetchCountryByName = async(name,fields=[])=>{
 export const fetchCountriesByRegion = async(region="",fields=[])=>{
   if(region.trim()==="")
     return fetchAllCountries(fields)
-
     let url = `https://restcountries.com/v3.1/region/${region}?fields=`
     for(let i=0;i<fields.length;i++){
       url+=fields[i]+","

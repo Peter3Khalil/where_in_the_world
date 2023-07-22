@@ -11,7 +11,7 @@ import ClipLoader from "react-spinners/ClipLoader";
 import Head from 'next/head';
 import Pagination from '../../components/Pagination';
 import SortByPopulation from '../../components/SortByPopualtion';
-const fields = ["name", "capital", "region", "population", "flags", "area"]
+const fields = ["name", "capital", "region", "population", "flags", "area","cca3"]
 
 const Home = () => {
   const [currentRegion, setCurrentRegion] = useState("")
@@ -87,7 +87,6 @@ const Home = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [])
-
 useEffect(()=>{
 refetch()
 },[sortByPopulation])
@@ -114,7 +113,8 @@ refetch()
       relative
       md:flex-row
       md:justify-between
-      '>
+      '
+      >
           <Searchbar setSearch={setSearch} />
           <div className='
           
@@ -176,9 +176,7 @@ refetch()
           </div>
         </div>
 
-
         <Pagination data={data} setData={setCountries} itemsPerPage={15} />
-
         <ScrollToTopComponent scrollY={scrollY} />
       </div>
     </>

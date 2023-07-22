@@ -4,6 +4,7 @@ import formatNumber  from '../util/formatNumber'
 import Link from 'next/link';
 import Image from 'next/image';
 import millify from "millify";
+import { useRouter } from 'next/router';
 
 const PropertyBox = ({ name, value ,title}) => {
   return (
@@ -17,9 +18,10 @@ const PropertyBox = ({ name, value ,title}) => {
   )
 }
 
-const CountryCard = ({ alt,flag, population, region, capital, name,area }) => {
+const CountryCard = ({ alt,flag, population, region, capital, name,area,cca3 }) => {
+  const router = useRouter()
   return (<>
-    <Link href={`/${name}`} className='
+    <button onClick={()=>router.push(`/${cca3}`)}  className='
     w-full
     h-full
     lg:bg-white
@@ -74,7 +76,7 @@ const CountryCard = ({ alt,flag, population, region, capital, name,area }) => {
           <PropertyBox name={"area"} title={formatNumber(area)+" km²"} value={millify(area,{units:["","K","Million"]})+" km²"} />
         </div>
       </div>
-    </Link>
+    </button>
   </>
   )
 }

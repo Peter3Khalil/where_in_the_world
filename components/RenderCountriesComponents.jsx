@@ -11,7 +11,7 @@ const RenderCountriesComponents= ({ data })=>{
       lg:h-[350px]
       '>
             <CountryCard area={item.area} alt={item.flags.alt} name={item.name.common} region={item.region}
-              capital={item?.capital} population={item.population} flag={item.flags.svg} />
+              capital={item?.capital} population={item.population} flag={item.flags.svg} cca3={item.cca3}/>
           </div>
   
         )

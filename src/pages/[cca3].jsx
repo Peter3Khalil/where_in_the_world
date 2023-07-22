@@ -7,7 +7,7 @@ import formatNumber from '../../util/formatNumber';
 import { useQuery, QueryClient, dehydrate } from 'react-query';
 import { fetchCountryByCode, fetchCountryByName } from '../../util/fetchApi';
 import Head from 'next/head';
-const fields = ["name", "population", "region", "capital", "languages", "currencies", "flags", "tld", "area", "idd", "borders", "subregion"]
+const fields = ["name", "population", "region", "capital", "languages", "currencies", "flags", "tld", "area", "idd", "borders", "subregion","cca3"]
 
 
 const PropertyBox = ({ property, value }) => {
@@ -19,10 +19,10 @@ const PropertyBox = ({ property, value }) => {
     </div>
   </>)
 }
-const CountryDetails = ({ dehydratedState, borders }) => {
+const CountryDetails = ({ data,borders }) => {
   const router = useRouter()
-  const data = dehydratedState.queries[0].state.data[0]
-  let { flags, name, population, area, capital, region, subregion, currencies, tld, idd, languages } = data
+ 
+  let { flags, name, population, area, capital, region, subregion, currencies, tld, idd, languages,cca3 } = data
   languages = Object.values(languages);
   currencies = Object.values(currencies)
   idd = Object.values(idd)
@@ -165,7 +165,7 @@ const CountryDetails = ({ dehydratedState, borders }) => {
                     min-h-[2.25rem]
                     
                     '>
-                          <BorderComponents key={i + item.name.common} name={item.name.common} />
+                          <BorderComponents key={i + item.name.common} name={item.name.common} cca3={item.cca3}/>
                         </div>
                       })}
                     </div>
@@ -176,12 +176,13 @@ const CountryDetails = ({ dehydratedState, borders }) => {
           </div>
         </div>
       </div>
+                
     </>
   )
 }
 
-const BorderComponents = ({ name }) => {
-  return <Link href={`/${name}`} className='
+const BorderComponents = ({ cca3,name }) => {
+  return <Link href={`/${cca3}`} className='
 w-full
 h-full
 flex
@@ -201,18 +202,16 @@ py-1
 }
 
 export const getServerSideProps = async ({ params }) => {
-  const { name } = params;
-  let { borders } = (await fetchCountryByName(name, ["borders"]))[0]
-  borders = borders.map(item => fetchCountryByCode(item, ["name"]))
+  const { cca3 } = params;
+  const data = await fetchCountryByCode(cca3, fields);
+  let {borders} = data;
+  borders = borders.map(item => fetchCountryByCode(item, ["cca3","name"]))
   borders = await Promise.all(borders)
-  borders = borders.slice(0, 3)
-
-  const queryClient = new QueryClient()
-  await queryClient.prefetchQuery(["country", name], () => fetchCountryByName(name, fields));
+  borders = borders.slice(0,3);
   return {
     props: {
-      dehydratedState: dehydrate(queryClient),
-      borders
+      borders,
+      data
     }
   }
 }
