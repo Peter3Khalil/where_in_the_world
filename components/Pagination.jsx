@@ -23,6 +23,7 @@ const Pagination = memo(({ data, itemsPerPage, setData }) => {
 
     useEffect(() => {
         setData(data?.slice(startIndex, endIndex))
+        window.scrollTo({top:0,behavior:"smooth"})
     }, [currentPage])
 
     return (

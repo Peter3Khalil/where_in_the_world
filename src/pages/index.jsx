@@ -10,50 +10,75 @@ import { BsFillArrowUpCircleFill } from "react-icons/bs"
 import ClipLoader from "react-spinners/ClipLoader";
 import Head from 'next/head';
 import Pagination from '../../components/Pagination';
+import SortByPopulation from '../../components/SortByPopualtion';
 const fields = ["name", "capital", "region", "population", "flags", "area"]
 
 const Home = () => {
   const [currentRegion, setCurrentRegion] = useState("all")
+  const [sortByPopulation, setSortByPopulation] = useState("")
   const [search, setSearch] = useState("");
   const [scrollY, setScrollY] = useState(0);
-  const { data, isLoading, isFetching } = useQuery(["countriesByRegion", currentRegion], () => fetchCountriesByRegion(currentRegion, fields), {
+  const { data, isLoading, isFetching,refetch } = useQuery(["countriesByRegion", currentRegion], () => fetchCountriesByRegion(currentRegion, fields), {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     select: data => {
       if (search === "") {
         let sortedNames = data.map(item => item.name.common).sort();
-        let sortedData = []
+        let sortedDataAlpha = []
         for (let i = 0; i < sortedNames.length; i++) {
           data.forEach(item => {
             if (item.name.common === sortedNames[i]) {
-              sortedData.push(item)
+              sortedDataAlpha.push(item)
             }
           })
         }
-        return sortedData;
+        if (sortByPopulation === "asc")
+          return sort(sortedDataAlpha)
+        else if (sortByPopulation === "desc") return sort(sortedDataAlpha, false)
+        else return sortedDataAlpha
       }
 
       let arrayIncludesSearchValue = data.filter((item) => item.name.common.toLowerCase().includes(search.toLowerCase()))
       let arrayStartWithSearchValue = arrayIncludesSearchValue.filter((item) => item.name.common.toLowerCase().startsWith(search.toLowerCase()))
 
       let sortedNames = arrayStartWithSearchValue.map(item => item.name.common.toLowerCase()).sort();
-      let sortedData = []
+      let sortedDataAlpha = []
       for (let i = 0; i < sortedNames.length; i++) {
         arrayStartWithSearchValue.forEach(item => {
           if (item.name.common.toLowerCase() === sortedNames[i].toLowerCase()) {
-            sortedData.push(item)
+            sortedDataAlpha.push(item)
           }
         })
       }
 
-      let array = new Set([...sortedData, ...arrayIncludesSearchValue])
+      let array = new Set([...sortedDataAlpha, ...arrayIncludesSearchValue])
       array = Array.from(array)
-      return array
+      if (sortByPopulation === "asc") return sort(array)
+      else if (sortByPopulation === "desc") return sort(array, false)
+      else return array
     }
   })
   const [countries, setCountries] = useState(data?.slice(0, 15))
   const handleScroll = () => {
     setScrollY(window.scrollY)
+  }
+  function sort(data, asc = true){
+    for (let i = 1; i < data?.length; i++) {
+      let currentElement = data[i];
+      let j = i - 1;
+      if (asc)
+        while (j >= 0 && data[j]?.population > currentElement.population) {
+          data[j + 1] = data[j];
+          j--;
+        }
+      else
+        while (j >= 0 && data[j]?.population <= currentElement.population) {
+          data[j + 1] = data[j];
+          j--;
+        }
+      data[j + 1] = currentElement;
+    }
+    return data
   }
 
   useEffect(() => {
@@ -62,6 +87,10 @@ const Home = () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [])
+
+useEffect(()=>{
+refetch()
+},[sortByPopulation])
   return (
     <>
       <Head>
@@ -88,21 +117,29 @@ const Home = () => {
       '>
           <Searchbar setSearch={setSearch} />
           <div className='
-        flex
-        justify-between
-        items-center
-        lg:gap-5
-        '>
-            <div className='lg:order-2'>
+          
+          flex
+          flex-col
+          items-center
+          gap-4
+          lg:flex-row
+          '>
+            <div className='
+            flex
+            gap-3
+            lg:gap-5
+            lg:order-1
+            '>
               <Filter currentRegion={currentRegion} setCurrentRegion={setCurrentRegion} />
+              <SortByPopulation setSortByPopulation={setSortByPopulation} sortByPopulation={sortByPopulation} />
             </div>
-            <h1 className='capitalize flex gap-1 md:hidden lg:flex lg:order-1'>
-              result:<span>{data?.length}</span> {currentRegion.toLowerCase() === "all" ? "" : `in ${currentRegion}`}
+            <h1 className='capitalize md:hidden lg:flex'>
+              result: <span className='font-bold mx-1'>{data?.length}</span> {currentRegion.toLowerCase() === "all" ? "" : `in ${currentRegion}`}
             </h1>
           </div>
         </div>
-        <h1 className='hidden capitalize gap-1  md:flex self-start lg:hidden'>
-          result:<span>{data?.length}</span> {currentRegion.toLowerCase() === "all" ? "" : `in ${currentRegion}`}
+        <h1 className='hidden capitalize gap-1  md:flex md:self-start lg:hidden'>
+          result: <span className='font-bold mx-1'>{data?.length}</span> {currentRegion.toLowerCase() === "all" ? "" : `in ${currentRegion}`}
         </h1>
 
         {/* Countries Container */}
@@ -139,9 +176,9 @@ const Home = () => {
           </div>
         </div>
 
-        
-          <Pagination data={data} setData={setCountries} itemsPerPage={15} />
-        
+
+        <Pagination data={data} setData={setCountries} itemsPerPage={15} />
+
         <ScrollToTopComponent scrollY={scrollY} />
       </div>
     </>
@@ -160,7 +197,7 @@ const ScrollToTopComponent = ({ scrollY }) => {
   z-50
   cursor-pointer
   '
-        onClick={() => window.scrollTo({ top: 0 })}
+        onClick={() => window.scrollTo({ top: 0 ,behavior:"smooth"})}
       >
         <BsFillArrowUpCircleFill className='w-6 h-6' />
       </div>
@@ -172,7 +209,7 @@ const ScrollToTopComponent = ({ scrollY }) => {
 export async function getStaticProps() {
   const queryClient = new QueryClient();
   // // Prefetching the user data
-  await queryClient.prefetchQuery(['countriesByRegion', "all"], () => fetchCountriesByRegion("all", fields));
+  await queryClient.prefetchQuery(['countriesByRegion', ""], () => fetchCountriesByRegion("", fields));
   return {
     props: {
       // Serializing the query client to pass it to the client-side React Query setup

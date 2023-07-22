@@ -1,11 +1,7 @@
-import React, { useState,FC, memo } from 'react'
+import React, { useState, memo } from 'react'
 import { FaAngleDown } from "react-icons/fa"
-
-
-
-
-const regions = ["Africa","Asia","Europe","Americas","Antarctic","Oceania"]
-const Filter = memo(({setCurrentRegion,currentRegion}) => {
+const list = ['asc',"desc"]
+const SortByPopulation = memo(({sortByPopulation,setSortByPopulation}) => {
   const [show, setShow] = useState(false)
   return (
     <div className='
@@ -33,9 +29,8 @@ const Filter = memo(({setCurrentRegion,currentRegion}) => {
       md:text-[16px]
       '
       onClick={() => setShow(!show)}
-
       >
-        <h1 className='capitalize font-[400]'>{"filter by region"}</h1>
+        <h1 className='capitalize font-[400]'>Sort By Population</h1>
         <FaAngleDown className='w-5 h-5' />
       </div>
       <div className='
@@ -50,9 +45,9 @@ const Filter = memo(({setCurrentRegion,currentRegion}) => {
       '
         style={{ display: show ? "block" : "none" }}
       >
-        {regions.map(item => {
+      {list.map(item => {
           return (<h1 key={item} className={
-            item.toLowerCase()===currentRegion.toLowerCase()?
+            item.toLowerCase()===sortByPopulation.toLowerCase()?
             `font-semibold capitalize h-10  dark:text-black
              bg-slate-300 flex justify-center items-center
              text-lg
@@ -61,8 +56,10 @@ const Filter = memo(({setCurrentRegion,currentRegion}) => {
             `font-semibold capitalize h-10 dark:hover:bg-slate-500 hover:bg-slate-100 flex justify-center items-center`
           }
             onClick={() => {
-              item.toLowerCase()===currentRegion.toLowerCase() ?setCurrentRegion(""):setCurrentRegion(item)
-              setShow(!show)}}
+                sortByPopulation===item?setSortByPopulation(""):setSortByPopulation(item)
+                setShow(!show)
+            }
+            }
           >
             {item}
           </h1>)
@@ -71,5 +68,5 @@ const Filter = memo(({setCurrentRegion,currentRegion}) => {
     </div>
   )
 })
-Filter.displayName = "Filter"
-export default Filter
+SortByPopulation.displayName = "SortByPopulation"
+export default SortByPopulation

@@ -19,8 +19,8 @@ export const fetchCountryByName = async(name,fields=[])=>{
     const {data} = await axios.get(url,{httpsAgent:agent});
     return data;
 }
-export const fetchCountriesByRegion = async(region="all",fields=[])=>{
-  if(region.toLowerCase()==="all")
+export const fetchCountriesByRegion = async(region="",fields=[])=>{
+  if(region.toLowerCase()==="")
     return fetchAllCountries(fields)
 
     let url = `https://restcountries.com/v3.1/region/${region}?fields=`
