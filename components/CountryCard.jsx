@@ -55,6 +55,7 @@ const CountryCard = ({ alt,flag, population, region, capital, name,area,cca3 }) 
       flex
       flex-col
       px-6
+      text-left
       '>
         <h1 className='
         mb-3
