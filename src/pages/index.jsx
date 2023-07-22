@@ -5,7 +5,7 @@ import Searchbar from '../../components/Searchbar'
 import Filter from '../../components/Filter'
 import MemoizedRenderCountriesComponents from '../../components/RenderCountriesComponents';
 import { fetchCountriesByRegion } from '../../util/fetchApi'
-import { QueryClient, dehydrate, useQuery } from "react-query"
+import { useQuery } from "react-query"
 import { BsFillArrowUpCircleFill } from "react-icons/bs"
 import ClipLoader from "react-spinners/ClipLoader";
 import Head from 'next/head';
@@ -14,7 +14,7 @@ import SortByPopulation from '../../components/SortByPopualtion';
 const fields = ["name", "capital", "region", "population", "flags", "area"]
 
 const Home = () => {
-  const [currentRegion, setCurrentRegion] = useState("all")
+  const [currentRegion, setCurrentRegion] = useState("")
   const [sortByPopulation, setSortByPopulation] = useState("")
   const [search, setSearch] = useState("");
   const [scrollY, setScrollY] = useState(0);
@@ -134,12 +134,12 @@ refetch()
               <SortByPopulation setSortByPopulation={setSortByPopulation} sortByPopulation={sortByPopulation} />
             </div>
             <h1 className='capitalize md:hidden lg:flex'>
-              result: <span className='font-bold mx-1'>{data?.length}</span> {currentRegion.toLowerCase() === "all" ? "" : `in ${currentRegion}`}
+              result: <span className='font-bold mx-1'>{data?.length}</span> {currentRegion === "" ? "" : `in ${currentRegion}`}
             </h1>
           </div>
         </div>
         <h1 className='hidden capitalize gap-1  md:flex md:self-start lg:hidden'>
-          result: <span className='font-bold mx-1'>{data?.length}</span> {currentRegion.toLowerCase() === "all" ? "" : `in ${currentRegion}`}
+          result: <span className='font-bold mx-1'>{data?.length}</span> {currentRegion === "" ? "" : `in ${currentRegion}`}
         </h1>
 
         {/* Countries Container */}
@@ -206,15 +206,4 @@ const ScrollToTopComponent = ({ scrollY }) => {
 }
 
 
-export async function getStaticProps() {
-  const queryClient = new QueryClient();
-  // // Prefetching the user data
-  await queryClient.prefetchQuery(['countriesByRegion', ""], () => fetchCountriesByRegion("", fields));
-  return {
-    props: {
-      // Serializing the query client to pass it to the client-side React Query setup
-      dehydratedState: dehydrate(queryClient),
-    },
-  };
-}
 export default Home

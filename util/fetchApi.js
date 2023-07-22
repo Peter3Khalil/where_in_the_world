@@ -20,7 +20,7 @@ export const fetchCountryByName = async(name,fields=[])=>{
     return data;
 }
 export const fetchCountriesByRegion = async(region="",fields=[])=>{
-  if(region.toLowerCase()==="")
+  if(region.trim()==="")
     return fetchAllCountries(fields)
 
     let url = `https://restcountries.com/v3.1/region/${region}?fields=`

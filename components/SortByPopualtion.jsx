@@ -25,7 +25,7 @@ const SortByPopulation = memo(({sortByPopulation,setSortByPopulation}) => {
       justify-center
       items-center
       gap-2
-      text-sm
+      text-[12px]
       md:text-[16px]
       '
       onClick={() => setShow(!show)}
