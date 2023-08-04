@@ -43,7 +43,9 @@ const Navbar= ({ setMode ,mode}) => {
         flex
         items-center
         gap-2
+        cursor-pointer
         `}
+        onClick={setMode}
       >
         {mode==="dark"?<CiLight/>:<CiDark />}
         
@@ -51,7 +53,7 @@ const Navbar= ({ setMode ,mode}) => {
         capitalize 
         cursor-pointer
         text-sm
-        " onClick={setMode}>
+        ">
           {mode==="dark"?"light mode":"dark mode"}
         </h3>
       </div>
