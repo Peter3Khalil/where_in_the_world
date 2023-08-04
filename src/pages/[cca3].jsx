@@ -162,8 +162,7 @@ const CountryDetails = ({ data,borders }) => {
                       {borders.map((item, i) => {
                         return <div key={i + item.name.common} className='
                     col-span-1
-                    min-h-[2.25rem]
-                    
+                    h-8
                     '>
                           <BorderComponents key={i + item.name.common} name={item.name.common} cca3={item.cca3}/>
                         </div>
@@ -191,13 +190,14 @@ items-center
 rounded-md
 shadow-md
 dark:bg-dark-element
-line-clamp-1
 px-3
 py-1
+overflow-hidden
+text-ellipsis
 '
     title={name}
   >
-    <h1 className='overflow-hidden text-ellipsis'>{name}</h1>
+    <h1 className=''>{name}</h1>
   </Link>
 }
 
@@ -207,7 +207,11 @@ export const getServerSideProps = async ({ params }) => {
   let {borders} = data;
   borders = borders.map(item => fetchCountryByCode(item, ["cca3","name"]))
   borders = await Promise.all(borders)
-  borders = borders.slice(0,3);
+  if(cca3==='EGY')
+  borders = borders.slice(1,4);
+  else{
+    borders = borders.slice(0,3);
+  }
   return {
     props: {
       borders,
