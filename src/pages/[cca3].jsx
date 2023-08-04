@@ -192,12 +192,10 @@ shadow-md
 dark:bg-dark-element
 px-3
 py-1
-overflow-hidden
-text-ellipsis
 '
     title={name}
   >
-    <h1 className=''>{name}</h1>
+    <h1 className='line-clamp-1'>{name}</h1>
   </Link>
 }
 

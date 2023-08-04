@@ -4,23 +4,21 @@ import React, { useState, useEffect, useContext } from 'react'
 import Searchbar from '../../components/Searchbar'
 import Filter from '../../components/Filter'
 import MemoizedRenderCountriesComponents from '../../components/RenderCountriesComponents';
-import { fetchCountriesByRegion } from '../../util/fetchApi'
-import { useQuery } from "react-query"
 import { BsFillArrowUpCircleFill } from "react-icons/bs"
 import ClipLoader from "react-spinners/ClipLoader";
 import Head from 'next/head';
 import Pagination from '../../components/Pagination';
 import SortByPopulation from '../../components/SortByPopualtion';
 import { MyContext } from '../../Context/context';
-const fields = ["name", "capital", "region", "population", "flags", "area", "cca3"]
 
 const Home = () => {
-  const { sortByPopulation, data,isLoading,isFetching,refetch } = useContext(MyContext)
+  const { sortByPopulation, data, isLoading, isFetching, refetch, population } = useContext(MyContext)
   const [scrollY, setScrollY] = useState(0);
   const [countries, setCountries] = useState(data?.slice(0, 15))
   const handleScroll = () => {
     setScrollY(window.scrollY)
   }
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll)
     return () => {
@@ -73,13 +71,20 @@ const Home = () => {
               <Filter />
               <SortByPopulation />
             </div>
-            <h1 className='capitalize md:hidden lg:flex'>
-              result: <span className='font-bold mx-1'>{data?.length}</span>
-            </h1>
+            <div className='capitalize md:hidden 
+            flex 
+            flex-col 
+            items-center
+            lg:flex lg:flex-col lg:items-center
+            '>
+              <h1> Countries: <span className='font-bold mx-1'>{data?.length}</span></h1>
+              {population && <h1>Total Population:<span className='font-bold mx-1'>{population}</span></h1>}
+            </div>
           </div>
         </div>
-        <h1 className='hidden capitalize gap-1  md:flex md:self-start lg:hidden'>
-          result: <span className='font-bold mx-1'>{data?.length}</span>
+        <h1 className='hidden capitalize gap-1  md:flex md:flex-col md:items-center md:self-center lg:hidden'>
+          <h1> Countries: <span className='font-bold mx-1'>{data?.length}</span></h1>
+          {population && <h1>Total Population:<span className='font-bold mx-1'>{population}</span></h1>}
         </h1>
 
         {/* Countries Container */}

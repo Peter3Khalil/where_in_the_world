@@ -1,13 +1,15 @@
-import React,{createContext, useState} from 'react'
+import React,{createContext, memo, use, useEffect, useState} from 'react'
 import { fetchCountriesByRegion } from '../util/fetchApi'
 import { useQuery } from 'react-query'
+import millify from 'millify'
 const fields = ["name", "capital", "region", "population", "flags", "area", "cca3"]
 export const MyContext = createContext()
-const ContextProvider = ({children}) => {
+const ContextProvider = memo(({children}) => {
     const [currentRegion, setCurrentRegion] = useState("")
     const [sortByPopulation, setSortByPopulation] = useState("")
     const [search,setSearch] = useState("")
     const [currentPage,setCurrentPage] = useState(1)
+    const [population,setPopulation] = useState(null);
     const { data, isLoading, isFetching, refetch } = useQuery(["countriesByRegion", currentRegion], () => fetchCountriesByRegion(currentRegion, fields), {
       refetchOnMount: false,
       refetchOnWindowFocus: false,
@@ -68,7 +70,18 @@ const ContextProvider = ({children}) => {
       }
       return data
     }
-  return (
+    function calcPopulation(data1) {
+      let total = 0;
+      data1?.forEach(item => {
+        total += item.population
+      })
+      return total
+    }
+    useEffect(() => {
+      if(search!=="")setPopulation(null)
+     else setPopulation(millify(calcPopulation(data)))
+    },[data])
+      return (
     <MyContext.Provider value={{
         currentRegion,
         setCurrentRegion,
@@ -81,11 +94,13 @@ const ContextProvider = ({children}) => {
         data,
         isLoading,
         isFetching,
-        refetch
+        refetch,
+        population
     }}>
         {children}
     </MyContext.Provider>
   )
-}
+})
+ContextProvider.displayName = "ContextProvider"
 
 export default ContextProvider
