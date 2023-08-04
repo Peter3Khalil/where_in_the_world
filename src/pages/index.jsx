@@ -22,6 +22,7 @@ const Home = () => {
     refetchOnMount: false,
     refetchOnWindowFocus: false,
     select: data => {
+      data = data.filter(item => item.population !== 0)
       if (search === "") {
         let sortedNames = data.map(item => item.name.common).sort();
         let sortedDataAlpha = []
