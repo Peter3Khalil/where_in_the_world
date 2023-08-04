@@ -35,7 +35,9 @@ const Filter = memo(({setCurrentRegion,currentRegion}) => {
       onClick={() => setShow(!show)}
 
       >
-        <h1 className='capitalize font-[400]'>{"filter by region"}</h1>
+        <h1 className='capitalize font-[400]'>
+          {currentRegion?currentRegion:"filter by region"}
+        </h1>
         <FaAngleDown className='w-5 h-5' />
       </div>
       <div className='

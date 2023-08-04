@@ -135,12 +135,12 @@ refetch()
               <SortByPopulation setSortByPopulation={setSortByPopulation} sortByPopulation={sortByPopulation} />
             </div>
             <h1 className='capitalize md:hidden lg:flex'>
-              result: <span className='font-bold mx-1'>{data?.length}</span> {currentRegion === "" ? "" : `in ${currentRegion}`}
+              result: <span className='font-bold mx-1'>{data?.length}</span>
             </h1>
           </div>
         </div>
         <h1 className='hidden capitalize gap-1  md:flex md:self-start lg:hidden'>
-          result: <span className='font-bold mx-1'>{data?.length}</span> {currentRegion === "" ? "" : `in ${currentRegion}`}
+          result: <span className='font-bold mx-1'>{data?.length}</span>
         </h1>
 
         {/* Countries Container */}

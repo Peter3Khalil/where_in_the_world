@@ -30,7 +30,9 @@ const SortByPopulation = memo(({sortByPopulation,setSortByPopulation}) => {
       '
       onClick={() => setShow(!show)}
       >
-        <h1 className='capitalize font-[400]'>Sort By Population</h1>
+        <h1 className='capitalize font-[400]'>
+          {sortByPopulation?sortByPopulation:"sort by population"}
+        </h1>
         <FaAngleDown className='w-5 h-5' />
       </div>
       <div className='
