@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 import { CiDark,CiLight } from "react-icons/ci";
 
-const Navbar= ({ setMode ,mode}) => {
+const Navbar= memo(({ setMode ,mode}) => {
   const router = useRouter()
   return (
     <nav
@@ -25,7 +25,7 @@ const Navbar= ({ setMode ,mode}) => {
       lg:px-14
     `}
     >
-      <h1
+      <Link href="/"
         className="
         first-letter:capitalize 
         font-bold 
@@ -34,10 +34,15 @@ const Navbar= ({ setMode ,mode}) => {
         tracking-wide
         cursor-pointer
         "
-        onClick={()=>router.push("/")}
+        onClick={()=>{
+          if(router.pathname !== "/") {
+            return router.push("/")
+          }
+          return router.reload()
+        }}
       >
         where in the world?
-      </h1>
+      </Link>
       <div
         className={`
         flex
@@ -59,6 +64,6 @@ const Navbar= ({ setMode ,mode}) => {
       </div>
     </nav>
   );
-};
-
+});
+Navbar.displayName="Navbar"
 export default Navbar;

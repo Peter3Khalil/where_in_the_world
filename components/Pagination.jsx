@@ -1,10 +1,11 @@
-import React, { FC, useEffect, useState, useRef, memo } from 'react'
+import React, { FC, useEffect, useState, useRef, memo, useContext } from 'react'
+import { MyContext } from '../Context/context';
 
 
 
 
 const Pagination = memo(({ data, itemsPerPage, setData }) => {
-    const [currentPage, setCurrentPage] = useState(1);
+    const {currentPage,setCurrentPage} = useContext(MyContext)
     const totalPages = Math.ceil(data?.length / itemsPerPage);
     const startIndex = (currentPage - 1) * itemsPerPage;
     const endIndex = startIndex + itemsPerPage;
@@ -25,7 +26,7 @@ const Pagination = memo(({ data, itemsPerPage, setData }) => {
         setData(data?.slice(startIndex, endIndex))
         window.scrollTo({top:0,behavior:"smooth"})
     }, [currentPage])
-
+    
     return (
         <>
             {(data?.length !== 0 && itemsPerPage <= data?.length) &&

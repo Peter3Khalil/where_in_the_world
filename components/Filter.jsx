@@ -1,12 +1,14 @@
-import React, { useState,FC, memo } from 'react'
+import React, { useState,FC, memo, useContext } from 'react'
 import { FaAngleDown } from "react-icons/fa"
+import { MyContext } from '../Context/context'
 
 
 
 
 const regions = ["Africa","Asia","Europe","Americas","Antarctic","Oceania"]
-const Filter = memo(({setCurrentRegion,currentRegion}) => {
+const Filter = memo(() => {
   const [show, setShow] = useState(false)
+  const {setCurrentRegion,currentRegion} = useContext(MyContext)
   return (
     <div className='
     w-[150px]

@@ -1,14 +1,12 @@
-import React,{FC,useState,useEffect, memo} from 'react'
+import React,{FC,useState,useEffect, memo, useContext} from 'react'
 import {BiSearch} from "react-icons/bi"
+import { MyContext } from '../Context/context'
 
-const Searchbar = memo(({setSearch}) => {
-  const [value,setValue] = useState("")
+const Searchbar = memo(() => {
+  const {search,setSearch} = useContext(MyContext)
   const handleOnChange = (e)=>{
-    setValue(e.target.value)
+    setSearch(e.target.value.trim())
   }
-  useEffect(()=>{
-    setSearch(value.trim())
-  },[value,setSearch])
   return (
     <div className='
     h-16
@@ -34,7 +32,7 @@ const Searchbar = memo(({setSearch}) => {
       tracking-wide
       font-semibold
       '
-      value={value}
+      value={search}
       onChange={handleOnChange}
       />
     </div>

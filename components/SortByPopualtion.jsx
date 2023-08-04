@@ -1,8 +1,10 @@
-import React, { useState, memo } from 'react'
+import React, { useState, memo, useContext } from 'react'
 import { FaAngleDown } from "react-icons/fa"
+import { MyContext } from '../Context/context'
 const list = ['asc',"desc"]
-const SortByPopulation = memo(({sortByPopulation,setSortByPopulation}) => {
+const SortByPopulation = memo(() => {
   const [show, setShow] = useState(false)
+  const {sortByPopulation,setSortByPopulation} = useContext(MyContext)
   return (
     <div className='
     w-[150px]
